@@ -62,7 +62,7 @@
     - name: upload package to s3
       amazon.aws.s3_object:
         bucket: "{{ package.repo.bucket }}"
-        object: "{{ package.repo.object }}"
+        object: "{{ package.repo.object_prefix }}/{{ local_package_location | basename }}"
         src: "{{ local_package_location }}"
         mode: put
       when: "package.repo.method == 's3'"
