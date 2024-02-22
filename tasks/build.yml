@@ -9,13 +9,13 @@
       path: /tmp/build.src
       state: directory
 
-- name: download archive
-  ansible.builtin.get_url:
-    url: "{{ source.url }}"
-    dest: "{{ source.path }}"
-    mode: '0440'
-  when:
-    - "source.url is defined"
+  - name: download archive
+    ansible.builtin.get_url:
+      url: "{{ source.url }}"
+      dest: "{{ source.path }}"
+      mode: '0440'
+    when:
+      - "source.url is defined"
 
   - name: extract archives
     unarchive:
