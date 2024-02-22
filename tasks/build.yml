@@ -14,8 +14,10 @@
       url: "{{ source.url }}"
       dest: "{{ source.path }}"
       mode: '0440'
-    when:
-      - "source.url is defined"
+    loop: "{{ package.sources }}"
+    loop_control:
+      loop_var: source
+    when: "source.url is defined"
 
   - name: extract archives
     unarchive:
