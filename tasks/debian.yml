@@ -11,3 +11,6 @@
 
 - name: execute package build
   shell: "dpkg --build /tmp/build /tmp/{{ package.name }}-{{ package.version }}-{{ package.release }}-{{ package.architecture }}.deb"
+
+- set_fact:
+    local_package_location: "/tmp/{{ package.name }}-{{ package.version }}-{{ package.release }}-{{ package.architecture }}.deb"

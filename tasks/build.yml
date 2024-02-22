@@ -59,5 +59,10 @@
   - include_tasks: debian.yml
     when: ansible_os_family == 'Debian'
   always:
-    - debug:
-        msg: Final
+    - name: upload package to s3
+      amazon.aws.s3_object:
+        bucket: "{{ package.repo.bucket }}"
+        object: "{{ package.repo.object }}"
+        src: "{{ local_package_location }}"
+        mode: put
+      when: "package.repo.method == 's3'"
