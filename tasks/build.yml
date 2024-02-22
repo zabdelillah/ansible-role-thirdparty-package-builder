@@ -19,6 +19,17 @@
       loop_var: source
     when: "source.url is defined"
 
+  - name: download from s3 bucket
+    amazon.aws.s3_object:
+      bucket: "{{ source.s3.bucket }}"
+      object: "{{ source.s3.object }}"
+      dest: "{{ source.path }}"
+      mode: get
+    loop: "{{ package.sources }}"
+    loop_control:
+      loop_var: source
+    when: "source.s3 is defined"
+
   - name: extract archives
     unarchive:
       src: "{{ source.path }}"
