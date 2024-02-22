@@ -1,0 +1,13 @@
+---
+- name: create debian directory
+  file:
+    path: /tmp/build/DEBIAN
+    state: directory
+
+- name: render debian control template
+  template:
+    src: debian.control.j2
+    dest: /tmp/build/DEBIAN/control
+
+- name: execute package build
+  shell: "dpkg --build /tmp/build /tmp/{{ package.name }}-{{ package.version }}-{{ package.release }}-{{ package.architecture }}.deb"

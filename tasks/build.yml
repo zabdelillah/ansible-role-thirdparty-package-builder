@@ -1,0 +1,42 @@
+---
+- block:
+  - name: create build directory
+    file:
+      path: /tmp/build
+      state: directory
+  - name: create source directory
+    file:
+      path: /tmp/build.src
+      state: directory
+
+  - name: extract archives
+    unarchive:
+      src: "{{ source.path }}"
+      dest: /tmp/build.src
+      remote_src: yes
+    loop: "{{ package.sources }}"
+    loop_control:
+      loop_var: source
+    when: "source.archive is defined"
+
+  - name: copy archives
+    copy:
+      src: "{{ source.path }}"
+      dest: /tmp/build.src
+      # remote_src: yes
+    loop: "{{ package.sources }}"
+    loop_control:
+      loop_var: source
+    when: "source.archive is not defined"
+
+  - name: prepare package
+    include_tasks: "{{ item }}"
+    loop: "{{ package.scripts.pre_build }}"
+    vars:
+      build_prefix: /tmp/build
+
+  - include_tasks: debian.yml
+    when: ansible_os_family == 'Debian'
+  always:
+    - debug:
+        msg: Final
