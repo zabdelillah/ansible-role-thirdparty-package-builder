@@ -68,11 +68,8 @@
       when: "package.repo.method == 's3'"
 
     - name: upload package to http endpoint
-      uri:
-        url: "{{ package.repo.url }}"
-        method: PUT
-        user: "{{ package.repo.auth.user }}"
-        password: "{{ package.repo.auth.pass }}"
-        force_basic_auth: yes
-        src: "{{ local_package_location }}"
-      when: "package.repo.method == 'http'"
+      shell: |
+        curl --user {{ package.repo.auth.user }}:{{ package.repo.auth.pass }} \
+           --upload-file {{ local_package_location }} \
+           {{ package.repo.url }}
+      when: "package.repo.method == 'http_basic'"
