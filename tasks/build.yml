@@ -69,7 +69,7 @@
 
     - name: upload package to http endpoint
       shell: |
-        curl --user {{ package.repo.auth.user }}:{{ package.repo.auth.pass }} \
+        curl --fail --user {{ package.repo.auth.user }}:{{ package.repo.auth.pass }} \
            --upload-file {{ local_package_location }} \
            {{ package.repo.url }}
       when: "package.repo.method == 'http_basic'"
