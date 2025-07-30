@@ -74,9 +74,5 @@
         user: "{{ package.repo.auth.user }}"
         password: "{{ package.repo.auth.pass }}"
         force_basic_auth: yes
-        status_code: 201
-        headers:
-          Content-Type: "application/vnd.debian.binary-package"
-        body: "{{ lookup('file', local_package_location, errors='ignore') }}"
-        body_format: raw
+        src: "{{ local_package_location }}"
       when: "package.repo.method == 'http'"
