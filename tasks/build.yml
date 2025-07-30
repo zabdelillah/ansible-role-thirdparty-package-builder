@@ -66,3 +66,17 @@
         src: "{{ local_package_location }}"
         mode: put
       when: "package.repo.method == 's3'"
+
+    - name: upload package to http endpoint
+      uri:
+        url: "{{ package.repo.url }}"
+        method: PUT
+        user: "{{ package.repo.auth.user }}"
+        password: "{{ package.repo.auth.pass }}"
+        force_basic_auth: yes
+        status_code: 201
+        headers:
+          Content-Type: "application/vnd.debian.binary-package"
+        body: "{{ lookup('file', local_package_location, errors='ignore') }}"
+        body_format: raw
+      when: "package.repo.method == 'http'"
